@@ -1,42 +1,85 @@
 public class MyArrayList {
     private Cow[] elems;
-    private int size;
+    private int size = 0;
 
-    // TODO: Runtime: O(?)
+    // TODO: Runtime: O(1)
     public MyArrayList() {
-        // TODO
+        elems = new Cow[10];
     }
 
-    // TODO: Runtime: O(?)
+    // TODO: Runtime: O(1)
     public MyArrayList(int capacity) {
-        // TODO
+        elems = new Cow[capacity];
     }
 
-    // TODO: Runtime: O(?)
+    // TODO: Runtime: O(1)*
     public void add(Cow c) {
-        // TODO
+        grow();
+        elems[size] = c;
+        size = size + 1;
     }
 
-    // TODO: Runtime: O(?)
+    // TODO: Runtime: O(1)
     public int size() {
-        // TODO
-        return -1;
+        return size;
     }
 
-    // TODO: Runtime: O(?)
+    // TODO: Runtime: O(1)
     public Cow get(int index) {
-        // TODO
-        return null;
+        if (index < size) {
+            return elems[index];
+        } else {
+            throw new IndexOutOfBoundsException();
+        }
+
     }
 
-    // TODO: Runtime: O(?)
+    // TODO: Runtime: O(N)
     public Cow remove(int index) {
-        // TODO
-        return null;
+        if (index < size) {
+
+            Cow result = elems[index];
+            for (int x = index + 1; x < size; x++)
+                elems[x - 1] = elems[x];
+
+            size = size - 1;
+            shrink();
+
+            return result;
+
+        } else {
+            throw new IndexOutOfBoundsException();
+        }
+
     }
 
-    // TODO: Runtime: O(?)
+    // TODO: Runtime: O(N)
     public void add(int index, Cow c) {
-        // TODO
+        if (index <= size) {
+            grow();
+            for (int x = index; x <= size; x++)
+                elems[x + 1] = elems[x];
+            elems[index] = c;
+            size = size + 1;
+        } else {
+            throw new IndexOutOfBoundsException();
+        }
+
+    }
+
+    public void shrink() {
+        if (elems.length / 4 > size) {
+            Cow[] result = new Cow[size / 2];
+            System.arraycopy(elems, 0, result, 0, size);
+            elems = result;
+        }
+    }
+
+    public void grow() {
+        if (elems.length == size) {
+            Cow[] result = new Cow[size * 2];
+            System.arraycopy(elems, 0, result, 0, size);
+            elems = result;
+        }
     }
 }
