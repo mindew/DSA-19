@@ -25,7 +25,9 @@ public class MyLinkedList {
     }
 
     public MyLinkedList() {
-        // TODO
+        head = null;
+        tail = null;
+        size = 0;
     }
 
     public int size() {
@@ -45,30 +47,100 @@ public class MyLinkedList {
     }
 
     public void addLast(Chicken c) {
-        // TODO
+        if (size == 0){
+            head = new Node(c);
+            tail = head;
+            size = size+1;
+        }
+        else {
+            Node newtail = new Node(c, tail, null);
+            tail.next = newtail;
+            tail = newtail;
+            size = size+1;
+        }
     }
 
     public void addFirst(Chicken c) {
-        // TODO
+        if (size == 0){
+            head = new Node(c);
+            tail = head;
+            size = size+1;
+        }
+        else {
+            Node newhead = new Node(c, null, head);
+            head.prev = newhead;
+            head = newhead;
+            size = size+1;
+        }
     }
 
     public Chicken get(int index) {
-        // TODO
-        return null;
+        Node current = head;
+        for (int x=0; x<index; x++)
+            current = current.next;
+        return current.val;
     }
 
     public Chicken remove(int index) {
-        // TODO
-        return null;
+
+        if (index == 0)
+            return removeFirst();
+        else if (index == size-1)
+            return removeLast();
+        else {
+            Node current = head;
+        for (int x=0; x<index; x++)
+            current = current.next;
+
+        current.prev.next = current.next;
+        current.next.prev = current.prev;
+        size = size -1;
+
+        return current.val;
+        }
     }
 
     public Chicken removeFirst() {
-        // TODO
-        return null;
+        if (size == 0) {
+            return null;
+        }
+        else if (size == 1) {
+            Chicken headdead = head.val;
+            head = null;
+            tail = null;
+            size = size - 1;
+            return headdead;
+        }
+        else {
+            Node current = head;
+            head = current.next;
+            Chicken dead = current.val;
+            current = null;
+
+            size = size - 1;
+            return dead;
+        }
     }
 
     public Chicken removeLast() {
-        // TODO
-        return null;
+        if (size == 0) {
+            return null;
+        }
+        else if (size == 1) {
+            Chicken headdead = head.val;
+            head = null;
+            tail = null;
+            size = size - 1;
+            return headdead;
+        }
+        else {
+            Node current = tail;
+            tail = current.prev;
+            Chicken dead = current.val;
+            current = null;
+
+            size = size - 1;
+            return dead;
+        }
     }
 }

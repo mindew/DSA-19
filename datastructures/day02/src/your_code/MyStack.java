@@ -1,4 +1,5 @@
 package your_code;
+
 import ADTs.StackADT;
 
 import java.util.LinkedList;
@@ -37,6 +38,8 @@ public class MyStack implements StackADT<Integer> {
 
     public Integer maxElement() {
         // TODO
-        return 0;
+        for(int x = 0; x<ll.size(); x++);
+
+
     }
 }
