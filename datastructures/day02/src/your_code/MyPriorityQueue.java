@@ -7,37 +7,35 @@ import java.util.LinkedList;
  */
 public class MyPriorityQueue {
 
-    private LinkedList<Integer> ll;
-    int size = 0;
+    private LinkedList<Integer> ll = new LinkedList<>();
 
     public void enqueue(int item) {
+        int index = 0;
 
-        ll.addLast(item);
-        size++;
+        if (ll.isEmpty()) {
+            ll.add(item);
+        }
+        else {
+            for (int x = 0; x <= ll.size()-1; x++)
+            {
+            if (item < ll.get(index))
+            {
+                index = index + 1;
+            }
+
+            }
+        }
+
+        ll.add(index, item);
     }
 
     /**
-     * Return and remove the largest item on the queue.
+     * Return and remove the largest item on the queue.s
      */
     public int dequeueMax() {
 
-        int maxval = 0;
-        int current = 0;
-        int maxvalind = 0;
-
-        for (int x = 0; x < size; x++)
-        {
-            current = ll.get(x);
-            if (maxval < current) {
-                maxval = current;
-                maxvalind = x;
-            }
-            else
-                continue;
-        }
-
-        ll.remove(maxvalind);
-        size--;
+        int maxval = ll.getFirst();
+        ll.removeFirst();
 
         return maxval;
 
