@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 public class Problems {
 
@@ -31,19 +28,64 @@ public class Problems {
             seen.add(j, A[i]);
             out[i] = getMedian(seen);
         }
+
+        System.out.print("expected: ");
+        System.out.println(Arrays.toString(out));
         return out;
     }
 
 
     /**
-     *
      * @param inputStream an input stream of integers
      * @return the median of the stream, after each element has been added
      */
     public static double[] runningMedian(int[] inputStream) {
-        double[] runningMedian = new double[inputStream.length];
-        // TODO
-        return runningMedian;
+        PriorityQueue<Integer> pqmax = maxPQ();
+        // first element is the largest element
+        // reversed order so that max to min
+        PriorityQueue<Integer> pqmin = minPQ();
+        // first element is the smallest element
+        // min to max
+
+        double[] med = new double[inputStream.length];
+        System.out.print("actual: ");
+
+        for (int x = 0; x < inputStream.length; x++) {
+            if (x == 0) {
+                med[x] = (double) inputStream[x];
+                pqmax.offer(inputStream[x]);
+            }
+
+            if (x != 0) {
+                if (inputStream[x] < med[x - 1]) {
+                    // input is smaller than median
+                    pqmax.offer(inputStream[x]);
+                } else {
+                    // input is bigger than median
+                    pqmin.offer(inputStream[x]);
+                }
+
+                // if the size are equal for minq and maxq
+                if (pqmax.size() != pqmin.size()) {
+                    // if the size of both qs are not equal
+                    // pqmin is less than pqmax
+                    if (pqmin.size() < pqmax.size()) {
+                        pqmin.offer(pqmax.poll());
+                    } else if (pqmin.size() - pqmax.size() >= 2) {
+                        pqmax.offer(pqmin.poll());
+                    }
+                }
+
+
+                if (pqmax.size() == pqmin.size()) {
+                    med[x] = (double) (pqmax.peek() + pqmin.peek()) / 2.0;
+                } else {
+                    med[x] = (double) (pqmin.peek());
+                }
+            }
+        }
+        System.out.println(Arrays.toString(med));
+        return med;
     }
 
 }

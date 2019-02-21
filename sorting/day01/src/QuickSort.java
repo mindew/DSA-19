@@ -12,15 +12,21 @@ public class QuickSort extends SortAlgorithm {
 
     /**
      * TODO
-     * Best-case runtime:
-     * Worst-case runtime:
-     * Average-case runtime:
+     * Best-case runtime: O(N logN)
+     * Worst-case runtime: O(N^2)
+     * Average-case runtime: O(N logN)
      *
-     * Space-complexity:
+     * Space-complexity: O(logN)
      */
     @Override
     public int[] sort(int[] array) {
         // TODO: Sort the array. Make sure you avoid the O(N^2) runtime worst-case
+        shuffleArray(array);
+        int lo = 0;
+        int hi = array.length-1;
+
+        quickSort(array, lo, hi);
+
         return array;
     }
 
@@ -35,7 +41,8 @@ public class QuickSort extends SortAlgorithm {
     public void quickSort(int[] a, int lo, int hi) {
         if (lo < hi) {
             int p = partition(a, lo, hi);
-            // TODO
+            quickSort(a, lo, p-1);
+            quickSort(a, p+1, hi);
         }
     }
 
@@ -49,8 +56,16 @@ public class QuickSort extends SortAlgorithm {
      * @param hi The ending index of the subarray being considered (inclusive)
      */
     public int partition(int[] array, int lo, int hi) {
-        // TODO
-        return 0;
+        int p = array[lo];
+        int l = lo+1;
+        for (int x = lo+1; x<=hi; x++) {
+            if (array[x]<p) {
+                swap(array, l, x);
+                l++;
+            }
+        }
+        swap(array, lo, l-1);
+        return l-1;
     }
 
 }
