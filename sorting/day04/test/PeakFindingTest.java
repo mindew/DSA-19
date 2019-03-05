@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -25,6 +26,11 @@ public class PeakFindingTest {
             valid = false;
         if (sol[1] != arr[0].length - 1 && value < arr[sol[0]][sol[1] + 1])
             valid = false;
+
+        System.out.print(sol[0]);
+        System.out.println(": row ");
+        System.out.print(sol[1]);
+        System.out.println(": column");
         assertTrue(valid);
     }
 
@@ -93,8 +99,16 @@ public class PeakFindingTest {
         for (int i = 0; i < nums.length; i++) {
             for (int j = 0; j < nums[0].length; j++) {
                 nums[i][j] = -1 * Math.abs(i - 50) - Math.abs(j - 50) + 100;
+//                if (nums[i][j]==100) {
+//                    System.out.println("" + i + ", " + j);
+//                }
             }
         }
+//        for (int i = 0; i < nums.length; i++) {
+//            System.out.println(Arrays.toString(nums[i]));
+//
+//        }
+
         isValidTwoDSolution(nums, PeakFinding.findTwoDPeak(nums));
     }
 

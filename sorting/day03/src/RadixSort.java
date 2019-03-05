@@ -21,18 +21,29 @@ public class RadixSort {
         LinkedList<Integer>[] L = new LinkedList[b];
         for (int i = 0; i < b; i++)
             L[i] = new LinkedList<>();
+
+
         for (int i : A) {
             // TODO: Extract the relevant digit from i, and add i to the corresponding Linked List.
+            // extract the relevant digit from i
+            int digit = getNthDigit(i, b, n);
+            L[digit].add(i);
         }
-        int j = 0; // index in A to place numbers
+
+
+        int h = 0; // index in A to place numbers
         for (LinkedList<Integer> list : L) {
-            // TODO: Put all numbers in the linked lists into A
+            for (int x = 0; x < list.size(); x++) {
+                A[h] = list.get(x);
+                //System.out.println(A[h]);
+                h++;
+            }
         }
     }
 
     /**
-     * Runtime: TODO: Express your runtime in terms of n, b, and w
-     *
+     * Runtime: O(nw)
+     * <p>
      * n: length of array
      * w: word length of integers A in base b (equal to log base b of k (log_b k) )
      *
@@ -45,6 +56,9 @@ public class RadixSort {
             k = (A[i] + 1 > k) ? A[i] + 1 : k;
         int w = (int) Math.ceil(Math.log(k) / Math.log(b)); // w = log base b of k, word length of numbers
         // TODO: Perform radix sort
+        for (int i = 0; i < w; i++) {
+            countingSortByDigit(A, b, i);
+        }
     }
 
 }

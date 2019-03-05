@@ -1,4 +1,8 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
+// runtime: O(nlogn) for everything
 
 public class BinarySearchTree<T extends Comparable<T>> {
     TreeNode<T> root;
@@ -28,15 +32,46 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     public List<T> inOrderTraversal() {
-        // TODO
-        return null;
+        // create a new linked list to store the result
+        List<T> traversed = new LinkedList<>();
+        TreeNode<T> pointer = root;
+        // find a minimum and move a pointer to the node with minimum key
+        // only if there's any node...
+        if (size > 0) {
+            while (pointer.hasLeftChild() != false) {
+                pointer = pointer.leftChild;
+                //System.out.println("Node: " + pointer.key );
+            }
+            //System.out.println("Size is: " + size);
+
+            // now we have minimum. find the successor from the minimum
+            // add the key to the linked list while recursively finding successor
+            // but first, add the minimum to the linked list
+            if (traversed.size() == 0) {
+                System.out.println(pointer);
+                traversed.add(pointer.key);
+            }
+
+            // edgecase: T has 0 node therefore has nothing to traverse
+            // System.
+            if (findSuccessor(pointer) == null)
+                return traversed;
+
+            // elsewise, find the successor of the current node and add it to the link
+            while (findSuccessor(pointer) != null) {
+                System.out.println("Node: " + pointer.key);
+                pointer = findSuccessor(pointer);
+                traversed.add(pointer.key);
+            }
+        }
+        return traversed;
     }
 
     /**
      * Deletes a node from the BST using the following logic:
      * 1. If the node has a left child, replace it with its predecessor
-     * 2. Else if it has a right child, replace it with its successor
-     * 3. If it has no children, simply its parent's pointer to it
+     * 2. Else if it has a right child, replace it with its
+     * * 3. If it has no children, simply its parent's pointer to it
      */
     public boolean delete(T key) {
         TreeNode<T> toDelete = find(root, key);
@@ -55,19 +90,25 @@ public class BinarySearchTree<T extends Comparable<T>> {
     private TreeNode<T> delete(TreeNode<T> n) {
         // Recursive base case
         if (n == null) return null;
-
         TreeNode<T> replacement;
 
-        if (n.isLeaf())
+        if (n.isLeaf()) {
             // Case 1: no children
             replacement = null;
-        else if (n.hasRightChild() != n.hasLeftChild())
+        System.out.println("no child"); }
+        else if (n.hasRightChild() != n.hasLeftChild()) {
             // Case 2: one child
             replacement = (n.hasRightChild()) ? n.rightChild : n.leftChild; // replacement is the non-null child
+            System.out.println("onechild"); }
         else {
+            System.out.println("hit");
             // Case 3: two children
-            // TODO
-            replacement = null;
+            // find inorder successor or predecessor of the node
+            // copy contents of the inorder successor to the node
+            // delete the inorder successor
+            replacement = findPredecessor(n);
+            delete(replacement);
+            replacement.moveChildrenFrom(n);
         }
 
         // Put the replacement in its correct place, and set the parent.
@@ -102,13 +143,51 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
 
     private TreeNode<T> findPredecessor(TreeNode<T> n) {
-        // TODO
-        return null;
+        TreeNode<T> pointer = n.parent;
+        TreeNode<T> max = n.leftChild;
+
+        // if given node has a left child --> return the maximum value of it's children
+        if (n.leftChild!=null) {
+            while (max.hasRightChild() != false) {
+                max = max.rightChild;
+                //System.out.println("Node: " + pointer.key );
+            }
+
+            return max;
+
+        } else if (pointer == null) {
+            return null;
+        }
+
+        while (pointer != null && n == pointer.leftChild) {
+            n = pointer;
+            pointer = pointer.parent;
+        }
+
+        return pointer;
     }
 
     private TreeNode<T> findSuccessor(TreeNode<T> n) {
-        // TODO
-        return null;
+        TreeNode<T> pointer = n.parent;
+        TreeNode<T> min = n.rightChild;
+
+        // if given node has a left child --> return the maximum value of it's children
+        if (n.rightChild!=null) {
+            while (min.hasLeftChild() != false) {
+                min = min.leftChild;
+                //System.out.println("Node: " + pointer.key );
+            }
+
+            return min;
+
+        }
+
+        while (pointer!= null && n == pointer.rightChild) {
+            n = pointer;
+            pointer = pointer.parent;
+        }
+
+        return pointer;
     }
 
     /**
